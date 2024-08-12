@@ -1,0 +1,142 @@
+	Source program (or source code) is a sequence of bits with value 0 or 1, they are organized in bytes(8 bits).
+Byte represents text character.
+	Text file - is a file made of ASCII code. Other files are binary files.
+Computers see numbers as finite approximations.
+	Compiling program:
+We need to translate C program(or other) into machine-code insturctions. It's called executable file.
+gcc -o "name of executable file" "c-file.c" - syntax to translate C program to executable file.
+* Preprocessor reads lines that begin with # (these are system headers consisting other code) and inserts them to program. It returns file with .i format.
+* Compiler translates .i format file to .s format file. It's assembly code. A lot of programs compile into assembly.
+* Assembly makes machine-code instructions and make a file .o It's now binary file.
+* Linker takes all the code from system headers, makes them working and results executable file with name we gave it.
+
+	Bus is an electrical conduit that carries chunks of bytes called words. Word is system parameter that defines how many bytes bus carries in the moment.
+	CPU executes instructions in the main memory (ram). At any time Program Counter points at a computer instruction.
+CPU executes instructions one by one every moment. It reads instruction that is pointet by Program Counter interpretsit and makes the operations, updates PC to the next instruction.
+These simple operations are in main memory, the Register File and alithmetic/logic unit(ALU). Register file contains small sized registers, and ALU is for new data and adressing values.
+	CPU can make:
+* Load: Take byte or word from RAM to register, changing previous value.
+* Store: Take register value and write it to main memory.
+* Operate: Take two registers, make arithmetic operation on store it to register.
+* Take a word from instruction into Program Counter.
+
+	When we run ./hello in the shell, it makes instructions to copy the code and data in ./hello executable from hard drive to main memory.
+It goes from hard drive directly to the main memory, not passing CPU (using direct memory access).
+When the program is in main memory it's stored as machine language instructions and being executed by CPU. These instructions copy bytes from string "hello world\n" to the register file and show them in display device.
+
+These instrucitons are slow, cuz the program goes from disk to main memory, then to processor, then the string "hello, world\n" goes to main memory then to display and etc. It's slowing the program, so we can make it faster.
+
+For processor reading data from main memory is alot faster then from hard drive. Cuz larger storage is slower then small storage (physical law). Register file stores few bytes of information but it's so fast. 
+There is *cache* thing. It is a small thing in a processor, L1 cache that holds tens of thousands bytes of information. It can be accessed almost as fast as register file. L2 cache is connected to CPU by special bus, it's hundreds of thousands bytes information but slower than L1 cache.  They are implemented by technology *static random access memory*. It uses *locality* - programs use data from local regions in memory. Often accessed info should be in memory that is fast to access.
+
+	Hierarchy:
+1. Register file holds words retrieved from cache memory.
+2. L1 cache(SRAM) holds cache lines from L2.
+3. L2 from L3.
+4. L3 from main memory.
+5. Main memory from hard drive.
+6. Hard drive from remote drives.
+
+Storages from higher level are cache for lower level storages.
+
+	For program to access hardware it should access it through operating system only.
+Operating system uses fundamental abstractions.
+	* Processes:
+	Processes can run on processor concurrently. One process' instruction then other process' instruction one by one, but not one process finish then another. It's like multiprocessing. But there are multicore CPUs that can execute multiple processes at the same time.
+Context switching - mechanism to switch between instructions in processes to execute them.
+
+OS keeps track of all state of processes. When changin process OS saves current context of the process, stores them and goes to another process. Context - is PC state, register file, content of main memory. New process takes from where it stoped.
+When we have shell running, it's also a process. When we press ./hello system calls *system call*. OS saves context of shell, creates hello process and gives control to the hello process. After hello executes shell gets control back.
+Context switch is done by OS' kernel. It always stays in memory. When app needs action by OS, it asks kernel to do it, kernel does this operation and returns to app.
+	Process can consist of threads - execution units. They have process' context and share global information. These are for faster execution of process.
+	* Virtual memory - an abstraction that provides every process an illusion that is has total control over main memory.
+Processes see memory the same way - *virtual address space*. 
+Virtual address parts:
+* Program code and data - the code from executable file written by user.
+* Heap - dynamicly changes it's size depending on the size of program. (library calls etc e.g. malloc(dynamyc memory allocation of c)).
+* Shared libraries is in charge of holding data of shared libraries in C.
+* Stack - implements function calls in C program. It grows when we call a function and expands when the funciton returns something.
+	it changes it's size dynamicly depending on the program function calls.
+* Kernel virtual memory. Programs can't write or read to it's code, but can ask kernel to execute something.
+Every of these virtual memory addresses are stored in the drive, and main memory is used as cache for them.
+
+	A file is a suquance of bytes. Every I/O device is modeled like a file. Intercation with I/O devices is implemented by reading and writing files. It's made by system calls Unix I/O.
+
+	System connects with other systems via network. 
+We can connect using telnet to another system. Open shell, type "./hello", it sends this string to server, server sends "./hello" to the shell, shell returnthe result "hello, world\n" and sends this string by telnet again to the client, this string is printed in the shell of the client.
+
+	Amdahl's law:
+When improve one part of system the general improve depends on how big this part has on the system and how much it improved.
+System took T(old) to execute, and a part needs aT(old) time of this system's time to execute. And the part was improved by K. Now the part needs only
+(aT(old))/K.
+The general time:
+	T(new) = (1-a)T(old) + (aT(old))/k = T(old) * ( (1-a) + a/K) )
+	Speedup S = 1/(1-a) + a/K
+
+	* When a processor has more than one core and thread, it means:
+Cores - processes run on every core and while one core is waiting for a process to return some data, the CPU can make other core to make this data. Every core has L1 cache for current data and for current instructions. . 
+Threads - when a processor can have multiple hardware while some of hardware are single. E.g. multiple program counters and register files, but single calculation unit.
+It makes possible for a processor to have multiple flows of control.
+
+	* Representing and Manipulating information *
+	Processor keeps data in ones and zeroes (binary code). The amount of these binaries are finite so sometimes if we try to store too large number represented in binary code, it can lead to overflow. It can lead to unexpected behavior of the code.
+In c 200 * 300 * 400 * 500 will return -853.000.000. It's for integers non negative.
+For floating it's most likely an approximation. So too little number will be just 0.0 and too large number is gonna be infinity.
+
+	Computers use blocks of 8 bits - bytes for memory, instead of accessing every bit in memory. Machine-level program sees memory as a very large array of bytes(virtual memory). Every byte has it's own address. Virtual address space - set of every address in virtual memory.
+Various mechanisms are used to store program data. For example pointers in C can point to an integer, object and etc. And it's value virtual address of some block of some block im memory.
+C compiler associates type information with each pointer so that it can generate correct machine code to work with value of the object pointer points to. But machine code treats everything and even the program itself as an array of bytes.
+A pointer has value and type. Value is address of location of an object, and type is the type of the object that it's referrencing to.
+
+	Hexadecimal notaiton
+	Byte is 8 bits. It's range 00000000 to 11111111 binary nonation. In  decimal notation it's from 0 to 255. In hexadecimal it's from 0 to 9 and A-F.
+In C numeric notations starting with 0x or 0X are considered hexadecimal. A-F letters can be lowercase or uppercase.
+	* Data sizes
+	Word size - size of pointer dat. Virtual address is encoded by this word. By word virtual address space defines it's size. If word size iw w, what virtual address ranges from 0 to 2^w -1 giving a program at most 2^w bytes.
+32 bit machine can only have 4 gigs of memory. 64 a lol more. If a program is compiled for 32bit system it can run on 64bit machine. It's compatibility, vice versa is not possible.
+Computers and compilers can support multiple data types with using different encodings. E.g. integers, floats etc. In 32bit machine and 64bit machine some data types are larger in 64bit machines cuz it has much bigger size of virtual address.
+	* Unsigned integer - integer that cannot be 0 or negative.
+Mostly compilers see data types as signed until we give them unsigned prefix. But C compiler treats char as unsigned. So that we need to make it signed ourselves.
+
+	Adressing and byte ordering
+For program object that takes a few bytes, we need to establish the address of the bytes and how we manage them in memory. Mostly we manage them like an array of bytes and it's address will be the smallest address of bytes used. E.g. we have an int, with address 0x100. First 4 bytes are 0x100 and other 3 bytes will be 0x101, 0x102 ...
+Little endian - convention where least significant byte comes first in the array.
+Big endian - most significant byte comes first in array.
+Most intel processors use small endian. ARM processor's can run both little and big endian. 
+When little endian machine sends data to big endian, it can lead to data to be reverse. So when computers send data through network sending machine converts the data into network standart and receiving turns into it's own convention.
+	Mostly computers use the same convention to store data, but different methods to allocate them in memory.
+
+	Representing strings
+	String in C is array of characters. Chars are represented by ASCII mostly but it may be other standart. 0x in hex would be 0x3x in ASCII and terminating byte of an array would be 0x00.
+When compiled, C code has different machine code on different systems. So when compiled, programs are incompatible. Even the same processor running different OS makes different machine code when compiling C source code.
+	* Boolean operations
+	Boolean operations can be applied not only for single 0 or 1, but for vector of ones and zeros. They should be of the same size and we just compare every ith element of first to second.
+With bit vectors we can represent finite numbers. If we have a subset A of {0, 1... w-1}, A will be equal to indexes of every bit in the set, that also exists in subset A.
+For example: vector b = {0 1 0 1} and B = { 2, 4} cuz bits equal to 1 are in set B.
+	* Bit level operations in C
+	In C it's supported bitwise(with bits) operations. The operands must be hexadecimal and it will be just fine.
+	
+	Logical operations in C
+	C has && || and !. Logical operations just like in logic algebra. Any argument is TRUE, and 0 is FALSE.
+	
+	Shift operations in C
+	For an operand x that has bit representation [Xw-1, Xw-2, ... X] expression x << k will make it's representation [Xw-k-1, ... 0,0]. It will shift x's bits to the left dropping off k(amount) of x's bits and filling them with zeros.
+C also provides right shift 
+logical shift: fills left part with k zeros.
+Arithmetic shift: fills left end with k repetitions of the most significant bit.
+Operation
+Argument x
+x << 4
+x >> 4 (logical)
+x >> 4 (arithmetic)
+Value 1
+[01100011]
+[00110000]
+[00000110]
+[00000110]
+Value 2
+[10010101]
+[01010000]
+[00001001]
+[11111001]
+

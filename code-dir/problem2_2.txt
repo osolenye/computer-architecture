@@ -1,0 +1,22 @@
+x = 2^n
+e.g. x = 2048 = 2^11. It's 100000000000 (1 and 11 zeroes just like power of 2)
+
+
+i = 0, x = 1
+i = 1, x = 2 
+i = 2, x = 4 
+i = 3, x = 8
+
+n = 11 = 3 + 4*2 i = 3, j = 2
+
+So when i = 3, for hex first digit will be 8, so it's 0x8 and amount of zeros is j. j = 2, so 0x800
+
+
+n	2^n(dec)	2^n(hex)
+
+5	32		0x20
+23	8388608		0x800000
+13	2^13		0x2000
+12	2^12		0x1000
+6	64		0x40
+8	256		0x100
