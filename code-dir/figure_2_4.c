@@ -24,5 +24,9 @@ void show_pointer(void *x) {
 }
 
 int main() {
-	int x = 0x87654321;
+	short x = 12345;
+	short mx = -x;
+
+	show_bytes( (byte_pointer) &x, sizeof(short));
+	show_bytes( (byte_pointer) &mx, sizeof(short));
 }

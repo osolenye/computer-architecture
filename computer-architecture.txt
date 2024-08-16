@@ -140,3 +140,20 @@ Value 2
 [00001001]
 [11111001]
 
+	When making shifts we should be careful of order of operations. Cuz cometimes it can behave not how we intented it to behave, it's like other operations so we can put parenteses.
+	
+	Integer representations
+	Integral data types
+	Unsigned data types are nonnegative, but can be max of signed data type multiplied by 2. E.g. signed char -128:128, unsigned char 0:255. Data types can have different sizes based on if the program compiled for 32 or 64 bit system. 64 bit system uses 8 bit word, 32 bit system uses 4 bit word size. Also negative number is one "more" than positive. -128 and 127.
+
+	Unsigned encodings
+	An unsigned int we represent as [Xw-1, X0], w = word size. It's array of 0 or 1. If at an index the bit equals to 1, we add to the number 2^i value. It's B2U_w - from binary to unsigned int with word size length.
+E.g. = 1011 - 4 bit size array of bits. [1, 0, 1, 1] = 2^3 + 2^1 + 2^0 = 8 + 2 + 1 = 11.
+Here also mention that at right is the most important bit.
+The minimal number will be [0, 0, 0, 0] for 4bit case, it's 0. And the max is [1, 1, 1, 1] = 15. It's 2^w - 1.
+	Two's complement encodings
+	The most significant bit (the right one) is sign bit. If it's 1, then it's -2^(2-1) and if it's zero, it's nonnegative.
+The least value for 4-bit case if [1, 0, 0, 0] wich is -8, and the max is [0,1,1,1] which is 7.
+	
+	For compatibility C makes standart for values. There is a macros for giving a variable a value:
+INTN_MAX and INTN_MIN
