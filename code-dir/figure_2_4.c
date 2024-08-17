@@ -24,9 +24,26 @@ void show_pointer(void *x) {
 }
 
 int main() {
-	short x = 12345;
-	short mx = -x;
+	/* short x = 12345; */
+	/* short mx = -x; */
 
-	show_bytes( (byte_pointer) &x, sizeof(short));
-	show_bytes( (byte_pointer) &mx, sizeof(short));
+	/* show_bytes( (byte_pointer) &x, sizeof(short)); */
+	/* show_bytes( (byte_pointer) &mx, sizeof(short)); */
+
+	short sx = -12345;
+	unsigned short usx = sx;
+	int x = sx;
+	unsigned int ux = usx;
+
+	printf("sx = %d\n", sx);
+	show_bytes( (byte_pointer) &sx, sizeof(short));
+
+	printf("usx = %d\n", usx);
+	show_bytes( (byte_pointer) &usx, sizeof(short));
+
+	printf("x = %d\n", x);
+	show_bytes( (byte_pointer) &x, sizeof(int));
+
+	printf("ux = %d\n", ux);
+	show_bytes( (byte_pointer) &ux, sizeof(int));
 }

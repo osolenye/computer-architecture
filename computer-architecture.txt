@@ -157,3 +157,16 @@ The least value for 4-bit case if [1, 0, 0, 0] wich is -8, and the max is [0,1,1
 	
 	For compatibility C makes standart for values. There is a macros for giving a variable a value:
 INTN_MAX and INTN_MIN
+
+	Conversions between Signed and Unsigned
+	C allows casting between these to. But if we cast too large unsigned number to be represented in two's complement in can yield to TMax, or negative signed can yield to zero in unsigned int. Cuz bit representation remains the same, and it's compilation will be different.
+	There are functions T2Uw, B2Uw.
+T2U is two's compliment to unsigned, that means negative number into nonnegative number. But it has problem, that it keeps the binary representation of the negative number and just changes the interpretation of this binary representation.
+	
+	Signed versus insigned in C
+	When making arithemtic combinations with mixed signed and unsigned values, C compiler will assume that both numbers are nonnegative. When casting signed int into unsigned int, it gets the INT_MAX value for unsigned int. It's because of overflow. When a number is too large or too small it rolls and goes other way. So it becomes INT_MAX or INT_MIN.
+
+	Expanding the bit representation of a number
+	Convert integers with different word sizes. Sometimes it's impossible it convert from bigger data type to smaller one, but vice versa is possible.
+When converting from smaller data type to bigger, we just add extra zeros - *zero extension*. 
+Result: [Xw-1, ... X0] for w = word size, when w' > w, [0, ... 0, Xw-1, ... X0].
