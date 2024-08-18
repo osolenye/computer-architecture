@@ -168,5 +168,10 @@ T2U is two's compliment to unsigned, that means negative number into nonnegative
 
 	Expanding the bit representation of a number
 	Convert integers with different word sizes. Sometimes it's impossible it convert from bigger data type to smaller one, but vice versa is possible.
+	For unsigned variables that use binary to unsigned.
 When converting from smaller data type to bigger, we just add extra zeros - *zero extension*. 
+	For signed variables that use two's compliment.
 Result: [Xw-1, ... X0] for w = word size, when w' > w, [0, ... 0, Xw-1, ... X0].
+When extending a representation in bits, for w + k, we copy the most important bit k times.
+E.g. w = 3 [1, 1, 1], w = 4 [1, 1, 1, 1]. It's going to keep the value, but it will change it's bit amount.
+C compiler first changes the size(data type) and then chooses between signed and unsigned. So it can make a short into int and only then change it's negativness.

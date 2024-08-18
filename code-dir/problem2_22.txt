@@ -1,0 +1,4 @@
+prove that it's two's compilment byte representation of -4
+A. [1100]	-2^3 + 2^2 = -4
+B. [11100]	-2^4 + 2^3 + 2^2 = -16 + 8 + 4 = -4
+C. [111100]	-2^ 5 + 2^4 + 2^3 + 2^2 = -16 + 8 + 4 = -4
