@@ -175,3 +175,11 @@ Result: [Xw-1, ... X0] for w = word size, when w' > w, [0, ... 0, Xw-1, ... X0].
 When extending a representation in bits, for w + k, we copy the most important bit k times.
 E.g. w = 3 [1, 1, 1], w = 4 [1, 1, 1, 1]. It's going to keep the value, but it will change it's bit amount.
 C compiler first changes the size(data type) and then chooses between signed and unsigned. So it can make a short into int and only then change it's negativness.
+
+	Truncating numbers
+	When casting int to short, we reduce amount of bits from 32 to 16. But int can be too large for short, so it yields to overflow.
+When truncating it keeps only small bits, and this number is like ostatok from B2U/k (k = w - k bits).
+	Two's complement number truncate
+	First we get mod 2^k (ostatok) from the x to x'(w-k). Then we give the result to function U2T (from unsigned to signed integral).
+But here's a thing. When truncating signed number, C compiler converts it to unsigned, makes all the operations, such that every convert is done to unsigned number, and only after that, the number is converted to two's complement number.
+Formula - B2T k ([xk−1 , xk−2, . . . , x0 ]) = U2T k (B2U w ([xw−1, xw−2 , . . . , x0 ]) mod 2k ). 
